@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, VFC } from "react";
+import { memo, VFC } from "react";
 import { Link } from 'react-router-dom';
 
 export const ErrorNotFound: VFC = memo(() => {

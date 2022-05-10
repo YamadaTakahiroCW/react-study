@@ -16,7 +16,7 @@ const toUserApi = (userView: UserRecord): User => {
     mail: userView.mailAddress,
     age: userView.age,
     gender: userView.gender,
-    job: '',
+    job: userView.job[0],
     interests: [...userView.hobby]
   } as User;
   

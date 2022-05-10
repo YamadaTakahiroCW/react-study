@@ -1,8 +1,8 @@
-import { memo, useCallback, ChangeEvent, useState, useEffect, VFC } from "react";
-import { createFilterOptions, Autocomplete, Stack, Box, Card, CardActions, SelectChangeEvent, CardContent, Checkbox, FormControlLabel, FormGroup, FormLabel, MenuItem, Radio, RadioGroup, Select, TextField, Button } from "@mui/material";
+import { memo, ChangeEvent, useState, useEffect, VFC } from "react";
+import { createFilterOptions, Autocomplete, Stack, Box, SelectChangeEvent, FormControlLabel, FormLabel, MenuItem, Radio, RadioGroup, Select, TextField, Button } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
 
-import { Gender, GenderList } from './../../types/consts/Gender'
+import { GenderList } from './../../types/consts/Gender'
 
 import { UserRecord } from "./../../types/view/UserRecord";
 import { useAllJobs } from "./../../hooks/master/useJob";
@@ -109,25 +109,24 @@ export const UserAdd: VFC = memo((props) => {
             >
               {
                 Object.entries(GenderList).map(([key, value]) => {
-                  <FormControlLabel value={value.id} control={<Radio />} label={value.name} />
+                  return <FormControlLabel value={value.id} control={<Radio />} label={value.name} key={key} />
                 })
               }
             </RadioGroup>
             <Select
-              labelId="user-job"
               id="user-job"
-              value={age}
+              value={job}
               label="職業"
               onChange={onChangeJob}
             >
               {
                 mstJobs.map((mstJob) => {
-                  <MenuItem value={mstJob.id}>{mstJob.name}</MenuItem>
+                  return <MenuItem value={mstJob.id} key={mstJob.id}>{mstJob.name}</MenuItem>
                 })
               }
             </Select>
             <Autocomplete
-              id="tags"
+              id="hobby-tags"
               size="small"
               options={[]}
               getOptionLabel={(option: {title: string, inputValue: string}) => {
@@ -164,8 +163,7 @@ export const UserAdd: VFC = memo((props) => {
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  label="tag"
-                  variant="standard"
+                  label="趣味"
                 />
               )}
             />

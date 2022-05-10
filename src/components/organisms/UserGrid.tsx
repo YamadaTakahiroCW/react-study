@@ -2,6 +2,7 @@ import { memo, VFC } from 'react';
 import { DataGrid, GridColumns, GridValueGetterParams, GridRenderCellParams } from '@mui/x-data-grid';
 
 import { UserRecord } from './../../types/view/UserRecord';
+import { useAllJobs } from "./../../hooks/master/useJob";
 
 type Props = {
   users: UserRecord[];
@@ -78,7 +79,7 @@ export const UserGrid: VFC<Props> = memo((props) => {
       <DataGrid
         rows={props.users}
         columns={columns}
-        pageSize={10}
+        pageSize={100}
         rowsPerPageOptions={[20]}
         disableSelectionOnClick
         hideFooterSelectedRowCount  // 左下のページ表示を非表示
