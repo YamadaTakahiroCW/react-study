@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useCallback, useState } from "react";
-import { User } from "./../../types/api/User";
+import { User } from "../../types/api/User";
 
 export const useAllUsers = () => {
   const [loading, setLoading] = useState<boolean>(false);

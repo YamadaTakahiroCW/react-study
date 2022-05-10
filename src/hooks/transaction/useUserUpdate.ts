@@ -5,7 +5,7 @@ import { User as apiUser } from "../../types/api/User";
 import { UserRecord as viewUser } from "../../types/view/UserRecord";
 
 // ユーザ新規登録
-export const useAddUser = () => {
+export const useUserUpdate = () => {
   const [saving, setSaving] = useState<boolean>(false);
   
   const addUser = useCallback((user: viewUser) => {

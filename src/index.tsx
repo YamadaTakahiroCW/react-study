@@ -1,23 +1,17 @@
 import React from "react";
-import /*ReactDOM,*/ { render } from "react-dom";
-import "./index.css";
+import { render } from "react-dom";
+import { BrowserRouter } from "react-router-dom";
 
 import reportWebVitals from "./reportWebVitals";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Router } from './router/Router';
 
-import App from "./App";
-import { Test } from "./components/pages/Test";
-import { UserList } from "./components/pages/UserList";
+import "./index.css";
 
 const rootElement = document.getElementById("root");
 render(
   <React.StrictMode>
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<App />} />
-        <Route path="test" element={<Test />} />
-        <Route path="userList" element={<UserList />} />
-      </Routes>
+      <Router />
     </BrowserRouter>
   </React.StrictMode>,
   rootElement

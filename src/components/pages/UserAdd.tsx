@@ -1,15 +1,22 @@
 import { memo, useCallback, ChangeEvent, useState, useEffect, VFC } from "react";
-import { Card, CardActions, SelectChangeEvent, CardContent, Checkbox, FormControlLabel, FormGroup, FormLabel, MenuItem, Radio, RadioGroup, Select, TextField, Button } from "@mui/material";
+import { createFilterOptions, Autocomplete, Stack, Box, Card, CardActions, SelectChangeEvent, CardContent, Checkbox, FormControlLabel, FormGroup, FormLabel, MenuItem, Radio, RadioGroup, Select, TextField, Button } from "@mui/material";
+import { useNavigate } from 'react-router-dom';
 
 import { Gender, GenderList } from './../../types/consts/Gender'
 
+import { UserRecord } from "./../../types/view/UserRecord";
 import { useAllJobs } from "./../../hooks/master/useJob";
 import { useAllInterests } from "./../../hooks/master/interest";
-import { useAddUser } from "../../hooks/user/userAddUser";
+import { useAddUser } from "../../hooks/transaction/useUserAdd";
 
-export const UserList: VFC = memo((props) => {
+const filter = createFilterOptions({stringify: (option: {title: string, inputValue: string}) => `${option.inputValue} ${option.title}`});
+
+export const UserAdd: VFC = memo((props) => {
+  const navigate = useNavigate();
+
   const { getAllJobs, jobs: mstJobs, loading: loadingJob } = useAllJobs();
   const { getAllInterests, interests: mstInterests, loading: loadingInterests } = useAllInterests();
+  const { addUser, saving } = useAddUser();
 
   const [id, setId] = useState<string>('');
   const [email, setEmail] = useState('');
@@ -53,14 +60,25 @@ export const UserList: VFC = memo((props) => {
     setInterests(interests);
   };
   const onClickAdd = () => {
-    useAddUser
+    const user = new UserRecord();
+    user.id = id;
+    user.mailAddress = email;
+    user.age = Number.parseInt(age);
+    user.gender = Number.parseInt(gender);
+    user.job.push(job);
+    user.hobby = [...interests];
+
+    addUser(user);
+  };
+  const onClickCancel = () => {
+    navigate('/user-list');
   }
 
   return (
     <main>
-      <div style={{ height: "80vh", width: '100%' }}>
-        <Card>
-          <CardContent>
+      <div>
+        <Box sx={{ width: '100%' }}>
+          <Stack spacing={2}>
             <TextField
               required
               id="user-id"
@@ -115,12 +133,59 @@ export const UserList: VFC = memo((props) => {
                 })
               }
             </FormGroup>
-            <Button onClick={onClickAdd}>追加</Button>
-          </CardContent>
-          <CardActions>
-            
-          </CardActions>
-        </Card>
+            <Autocomplete
+              id="tags"
+              size="small"
+              options={[]}
+              getOptionLabel={(option: {title: string, inputValue: string}) => {
+                // Value selected with enter, right from the input
+                if (typeof option === 'string') {
+                  return option;
+                }
+                // Add "xxx" option created dynamically 
+                if (option.inputValue) {
+                  return option.inputValue;
+                }
+                // Regular option
+                return option.title;
+              }}
+              multiple // 複数可
+              freeSolo // 自由入力可
+              clearOnBlur // 新規選択肢を追加可
+              filterOptions={(options: {title: string, inputValue: string}[], params) => {
+                const filtered = filter(options, params);
+                // Suggest the creation of a new value
+                if (params.inputValue !== '') {
+                  filtered.push({
+                    inputValue: params.inputValue,
+                    title: params.inputValue,
+                  });
+                }
+                return filtered;
+              }}
+              onChange={(e, v) => setInterests(v.map((tag) => {
+                  if (typeof tag === 'string') {
+                    return tag;
+                  }
+                  // Add "xxx" option created dynamically 
+                  if (tag.inputValue) {
+                    return tag.inputValue;
+                  }
+                  // Regular option
+                  return tag.title;
+                }))}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="tag"
+                  variant="standard"
+                />
+              )}
+            />
+          </Stack>
+          <Button variant="contained" size="medium" onClick={onClickAdd}>追加</Button>
+          <Button variant="contained" size="medium" onClick={onClickCancel}>戻る</Button>
+        </Box>
       </div>
     </main>
   );
