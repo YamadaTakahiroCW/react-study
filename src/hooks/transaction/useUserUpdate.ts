@@ -8,7 +8,7 @@ import { UserRecord as viewUser } from "../../types/view/UserRecord";
 export const useUserUpdate = () => {
   const [saving, setSaving] = useState<boolean>(false);
   
-  const addUser = useCallback((user: viewUser) => {
+  const userUpdate = useCallback((user: viewUser) => {
     setSaving(true);
 
     axios
@@ -28,5 +28,5 @@ export const useUserUpdate = () => {
       });
   }, []);
 
-  return { addUser, saving };
+  return { userUpdate, saving };
 };

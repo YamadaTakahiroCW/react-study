@@ -7,7 +7,7 @@ import { Gender, GenderList } from './../../types/consts/Gender'
 import { UserRecord } from "./../../types/view/UserRecord";
 import { useAllJobs } from "./../../hooks/master/useJob";
 import { useAllInterests } from "./../../hooks/master/interest";
-import { useAddUser } from "../../hooks/transaction/useUserAdd";
+import { useUserAdd } from "../../hooks/transaction/useUserAdd";
 
 const filter = createFilterOptions({stringify: (option: {title: string, inputValue: string}) => `${option.inputValue} ${option.title}`});
 
@@ -16,7 +16,7 @@ export const UserAdd: VFC = memo((props) => {
 
   const { getAllJobs, jobs: mstJobs, loading: loadingJob } = useAllJobs();
   const { getAllInterests, interests: mstInterests, loading: loadingInterests } = useAllInterests();
-  const { addUser, saving } = useAddUser();
+  const { userAdd, saving } = useUserAdd();
 
   const [id, setId] = useState<string>('');
   const [email, setEmail] = useState('');
@@ -68,7 +68,7 @@ export const UserAdd: VFC = memo((props) => {
     user.job.push(job);
     user.hobby = [...interests];
 
-    addUser(user);
+    userAdd(user);
   };
   const onClickCancel = () => {
     navigate('/user-list');
@@ -126,35 +126,24 @@ export const UserAdd: VFC = memo((props) => {
                 })
               }
             </Select>
-            <FormGroup>
-              {
-                mstInterests.map((mstInterest) => {
-                  <FormControlLabel control={<Checkbox value={mstInterest.id} onChange={onChangeInterests} />} label={mstInterest.name} />
-                })
-              }
-            </FormGroup>
             <Autocomplete
               id="tags"
               size="small"
               options={[]}
               getOptionLabel={(option: {title: string, inputValue: string}) => {
-                // Value selected with enter, right from the input
                 if (typeof option === 'string') {
                   return option;
                 }
-                // Add "xxx" option created dynamically 
                 if (option.inputValue) {
                   return option.inputValue;
                 }
-                // Regular option
                 return option.title;
               }}
-              multiple // 複数可
-              freeSolo // 自由入力可
-              clearOnBlur // 新規選択肢を追加可
+              multiple
+              freeSolo
+              clearOnBlur
               filterOptions={(options: {title: string, inputValue: string}[], params) => {
                 const filtered = filter(options, params);
-                // Suggest the creation of a new value
                 if (params.inputValue !== '') {
                   filtered.push({
                     inputValue: params.inputValue,
@@ -167,11 +156,9 @@ export const UserAdd: VFC = memo((props) => {
                   if (typeof tag === 'string') {
                     return tag;
                   }
-                  // Add "xxx" option created dynamically 
                   if (tag.inputValue) {
                     return tag.inputValue;
                   }
-                  // Regular option
                   return tag.title;
                 }))}
               renderInput={(params) => (

@@ -3,16 +3,16 @@ import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
 
 import { toUsersRecord } from "../../types/converts/toUserView";
-import { useAllUsers } from "../../hooks/transaction/useUserSelectAll";
+import { useUserSelectAll } from "../../hooks/transaction/useUserSelectAll";
 import { UserGrid } from '../organisms/UserGrid';
 
 export const UserList: VFC = memo(() => {
   const navigate = useNavigate();
 
-  const { getUsers, users, loading } = useAllUsers();
+  const { userSelectAll, users, loading } = useUserSelectAll();
 
   useEffect(() => {
-    getUsers();
+    userSelectAll();
   }, []);
 
   const onClickAddUser = () => {

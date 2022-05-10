@@ -5,10 +5,10 @@ import { User as userApi } from "../../types/api/User";
 import { UserRecord as userView } from "../../types/view/UserRecord";
 import { toUserApi } from './../../types/converts/toUserApi';
 
-export const useAddUser = () => {
+export const useUserAdd = () => {
   const [saving, setSaving] = useState<boolean>(false);
   
-  const addUser = useCallback((srcUser: userView) => {
+  const userAdd = useCallback((srcUser: userView) => {
 
     console.log(srcUser);
 
@@ -32,5 +32,5 @@ export const useAddUser = () => {
       });
   }, []);
 
-  return { addUser, saving };
+  return { userAdd, saving };
 };

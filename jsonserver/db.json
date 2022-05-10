@@ -94,6 +94,18 @@
         "147"
       ],
       "id": 9
+    },
+    {
+      "user_id": null,
+      "mail": "",
+      "age": null,
+      "gender": null,
+      "job": "",
+      "interests": [
+        "asd ",
+        "aaa"
+      ],
+      "id": 10
     }
   ],
   "job": [

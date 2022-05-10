@@ -2,11 +2,11 @@ import axios from "axios";
 import { useCallback, useState } from "react";
 import { User } from "../../types/api/User";
 
-export const useAllUsers = () => {
+export const useUserSelectAll = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [users, setUsers] = useState<Array<User>>([]);
 
-  const getUsers = useCallback(() => {
+  const userSelectAll = useCallback(() => {
     setLoading(true);
 
     axios
@@ -22,5 +22,5 @@ export const useAllUsers = () => {
       });
   }, []);
 
-  return { getUsers, loading, users };
+  return { userSelectAll, loading, users };
 };
